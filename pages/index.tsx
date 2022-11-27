@@ -1,4 +1,4 @@
-import React, { useState }from 'react'
+import React, { useState, useEffect }from 'react'
 
 //refractor ideas create a component for the buttons numebrs and signs
 
@@ -14,38 +14,66 @@ export default function Home() {
   const outsideButtons = "bg-amber-500 rounded-3xl text-4xl text-center p-3"
   const insideNumbers = "bg-gray-500 rounded-3xl text-4xl text-center p-3"
   const [show, setShow] = useState("0")
-  const[numberInputs, setNumberInputs] = useState("")
+  const[numberInputs, setNumberInputs] = useState([])
   const[signInputs, setSignInputs] = useState("")
+  const [resetting, setRest] = useState(false)
   const [dotChecked, setChecked] = useState(false)
 
   const numberClick = (number: string) => {
-    if(show === "0"){
-      if(number !== "."){
+    if(show === "0" && number !== "."){
+      if(resetting){
         setShow(number)
       }
+        setShow(number)
     }
     else if(Number(number) || number === "."){
-      if(number === "."){
-        if(dotChecked){
-          console.log("create error message")
-          setShow(show)
+      if(resetting){
+        console.log("correct")
+        if(number === "."){
+          if(dotChecked){
+            console.log("create error message")
+            console.log("hello ")
+          }else{
+            setChecked(true)
+            setShow("0")
+            setShow(show + number)
+            console.log("time")
+          }
         }else{
-          setChecked(true)
-          setShow(show + number)
+          setShow(number)
+          setRest(false)
         }
       }else{
         setShow(show + number)
       }
     }
+    else if(number === "+" || number === "-" || number === "*" || number === "/"){
+      setNumberInputs(numberInputs.concat(Number(show), number))
+      setRest(true)
+      console.log("fired")
+      console.log(numberInputs)
+    }
+  }
+
+  // get the first 2 numbers and then check the first sign in the array
+  // do the appropriate operation after checking what is the operation
+  const submit = () => {
+    let getSign = 1
+    let checked = 0
+    let total = 0
+
+    setNumberInputs(numberInputs)
+    console.log(numberInputs)
+
+    console.log(numberInputs[0] + Number(show))
   }
 
   const clearButton = () => {
     setShow("0")
-    setNumberInputs("")
+    setNumberInputs([])
     setSignInputs("")
     setChecked(false)
   }
-
   return (
     <div>
       <div className="flex justify-center items-center h-screen">
@@ -69,10 +97,10 @@ export default function Home() {
             <button className={insideNumbers} value="1" onClick={({target}) => numberClick(target.value)}>1</button>
             <button className={insideNumbers} value="2" onClick={({target}) => numberClick(target.value)}>2</button>
             <button className={insideNumbers} value="3" onClick={({target}) => numberClick(target.value)}>3</button>
-            <button className={outsideButtons} value="+">+</button>
+            <button className={outsideButtons} value="+" onClick={({target}) => numberClick(target.value)}>+</button>
             <button className="bg-gray-500 rounded-3xl text-4xl text-center p-3 col-span-2" value="0" onClick={({target}) => numberClick(target.value)}>0</button>
             <button className={insideNumbers} value="." onClick={({target}) => numberClick(target.value)}>.</button>
-            <button className={outsideButtons}>=</button>
+            <button className={outsideButtons} onClick={() => submit()}>=</button>
           </div>
         </div>
       </div>
