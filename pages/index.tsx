@@ -1,5 +1,7 @@
 import React, { useState }from 'react'
 
+//refractor ideas create a component for the buttons numebrs and signs
+
 export default function Home() {
   //it takes 8 characters to fill the input box
 
@@ -14,14 +16,34 @@ export default function Home() {
   const [show, setShow] = useState("0")
   const[numberInputs, setNumberInputs] = useState("")
   const[signInputs, setSignInputs] = useState("")
+  const [dotChecked, setChecked] = useState(false)
 
   const numberClick = (number: string) => {
     if(show === "0"){
-      setShow(number)
+      if(number !== "."){
+        setShow(number)
+      }
     }
-    else{
-      setShow(show + number)
+    else if(Number(number) || number === "."){
+      if(number === "."){
+        if(dotChecked){
+          console.log("create error message")
+          setShow(show)
+        }else{
+          setChecked(true)
+          setShow(show + number)
+        }
+      }else{
+        setShow(show + number)
+      }
     }
+  }
+
+  const clearButton = () => {
+    setShow("0")
+    setNumberInputs("")
+    setSignInputs("")
+    setChecked(false)
   }
 
   return (
@@ -32,7 +54,7 @@ export default function Home() {
             <div className="text-black text-7xl">{show}</div>
           </div>
           <div className=" grid grid-rows-5 grid-cols-4 gap-4 m-4">
-            <div className={outsideButtons}>AC</div>
+            <button className={outsideButtons} onClick={() =>  clearButton()}>AC</button>
             <button className={outsideButtons} value="+">+-</button>
             <button className={outsideButtons} value="%">%</button>
             <button className={outsideButtons} value="/">/</button>
@@ -49,7 +71,7 @@ export default function Home() {
             <button className={insideNumbers} value="3" onClick={({target}) => numberClick(target.value)}>3</button>
             <button className={outsideButtons} value="+">+</button>
             <button className="bg-gray-500 rounded-3xl text-4xl text-center p-3 col-span-2" value="0" onClick={({target}) => numberClick(target.value)}>0</button>
-            <button className={insideNumbers} value="."onClick={({target}) => numberClick(target.value)}>.</button>
+            <button className={insideNumbers} value="." onClick={({target}) => numberClick(target.value)}>.</button>
             <button className={outsideButtons}>=</button>
           </div>
         </div>
