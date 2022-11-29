@@ -18,6 +18,22 @@ export default function Home() {
   const[signInputs, setSignInputs] = useState("")
   const [resetting, setRest] = useState(false)
   const [dotChecked, setChecked] = useState(false)
+  const [afterEquals, setAfter] = useState(0)
+
+  const getOperation = (num1: number, assignment: string, num2:number) => {
+    if(assignment === "+"){
+      return num1 + num2 
+    }
+    else if(assignment === "-"){
+      return num1 - num2
+    }
+    else if(assignment === "*"){
+      return num1 * num2
+    }
+    else if(assignment === "-"){
+      return num1 - num2
+    }
+  }
 
   const numberClick = (number: string) => {
     if(show === "0" && number !== "."){
@@ -25,47 +41,51 @@ export default function Home() {
         setShow(number)
       }
         setShow(number)
+        setNumberInputs(numberInputs.concat(Number(number)))
     }
     else if(Number(number) || number === "."){
       if(resetting){
-        console.log("correct")
         if(number === "."){
           if(dotChecked){
             console.log("create error message")
-            console.log("hello ")
           }else{
             setChecked(true)
             setShow("0")
             setShow(show + number)
-            console.log("time")
           }
         }else{
           setShow(number)
+          setNumberInputs(numberInputs.concat(Number(number)))
           setRest(false)
         }
       }else{
         setShow(show + number)
+        setNumberInputs(numberInputs.concat(Number(number)))
       }
     }
     else if(number === "+" || number === "-" || number === "*" || number === "/"){
-      setNumberInputs(numberInputs.concat(Number(show), number))
+      setNumberInputs(numberInputs.concat(number))
       setRest(true)
       console.log("fired")
-      console.log(numberInputs)
     }
   }
 
   // get the first 2 numbers and then check the first sign in the array
   // do the appropriate operation after checking what is the operation
-  const submit = () => {
-    let getSign = 1
-    let checked = 0
-    let total = 0
+  //1 + 2 + 3 
+  //1 + 2 + 3 + 4
+  const submit = ()  => {
+    let finalTotal = getOperation(numberInputs[0], numberInputs[1], numberInputs[2])
 
-    setNumberInputs(numberInputs)
-    console.log(numberInputs)
-
-    console.log(numberInputs[0] + Number(show))
+    if(numberInputs.length === 3){
+      setShow(finalTotal)
+    }else{
+      for(let i = 4; i < numberInputs.length; i  = i + 2){
+        finalTotal = getOperation(finalTotal, numberInputs[i -1], numberInputs[i])
+        console.log(finalTotal)
+      }
+    }
+    setShow(finalTotal)
   }
 
   const clearButton = () => {
@@ -74,6 +94,10 @@ export default function Home() {
     setSignInputs("")
     setChecked(false)
   }
+
+/*   useEffect(() => {
+    console.log(numberInputs)
+  }, [numberInputs]) */
   return (
     <div>
       <div className="flex justify-center items-center h-screen">
@@ -83,17 +107,17 @@ export default function Home() {
           </div>
           <div className=" grid grid-rows-5 grid-cols-4 gap-4 m-4">
             <button className={outsideButtons} onClick={() =>  clearButton()}>AC</button>
-            <button className={outsideButtons} value="+">+-</button>
+            <button className={outsideButtons} value="-">+-</button>
             <button className={outsideButtons} value="%">%</button>
-            <button className={outsideButtons} value="/">/</button>
+            <button className={outsideButtons} value="/" onClick={({target}) => numberClick(target.value)} >/</button>
             <button className={insideNumbers} value="7" onClick={({target}) => numberClick(target.value)}>7</button>
             <button className={insideNumbers} value="8" onClick={({target}) => numberClick(target.value)}>8</button>
             <button className={insideNumbers} value="9" onClick={({target}) => numberClick(target.value)}>9</button>
-            <button className={outsideButtons} value="*">*</button>
+            <button className={outsideButtons} value="*" onClick={({target}) => numberClick(target.value)}>*</button>
             <button className={insideNumbers} value="4" onClick={({target}) => numberClick(target.value)}>4</button>
             <button className={insideNumbers} value="5" onClick={({target}) => numberClick(target.value)}>5</button>
             <button className={insideNumbers} value="6" onClick={({target}) => numberClick(target.value)}>6</button>
-            <button className={outsideButtons} value="-">-</button>
+            <button className={outsideButtons} value="-" onClick={({target}) => numberClick(target.value)}>-</button>
             <button className={insideNumbers} value="1" onClick={({target}) => numberClick(target.value)}>1</button>
             <button className={insideNumbers} value="2" onClick={({target}) => numberClick(target.value)}>2</button>
             <button className={insideNumbers} value="3" onClick={({target}) => numberClick(target.value)}>3</button>
