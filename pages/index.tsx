@@ -1,4 +1,4 @@
-import React, { useState, useEffect }from 'react'
+import React, { useState}from 'react'
 
 //refractor ideas create a component for the buttons numebrs and signs
 
@@ -18,7 +18,6 @@ export default function Home() {
   const[signInputs, setSignInputs] = useState("")
   const [resetting, setRest] = useState(false)
   const [dotChecked, setChecked] = useState(false)
-  const [afterEquals, setAfter] = useState(0)
 
   const getOperation = (num1: number, assignment: string, num2:number) => {
     if(assignment === "+"){
@@ -109,21 +108,21 @@ export default function Home() {
             <button className={outsideButtons} onClick={() =>  clearButton()}>AC</button>
             <button className={outsideButtons} value="-">+-</button>
             <button className={outsideButtons} value="%">%</button>
-            <button className={outsideButtons} value="/" onClick={({target}) => numberClick(target.value)} >/</button>
-            <button className={insideNumbers} value="7" onClick={({target}) => numberClick(target.value)}>7</button>
-            <button className={insideNumbers} value="8" onClick={({target}) => numberClick(target.value)}>8</button>
-            <button className={insideNumbers} value="9" onClick={({target}) => numberClick(target.value)}>9</button>
-            <button className={outsideButtons} value="*" onClick={({target}) => numberClick(target.value)}>*</button>
-            <button className={insideNumbers} value="4" onClick={({target}) => numberClick(target.value)}>4</button>
-            <button className={insideNumbers} value="5" onClick={({target}) => numberClick(target.value)}>5</button>
-            <button className={insideNumbers} value="6" onClick={({target}) => numberClick(target.value)}>6</button>
-            <button className={outsideButtons} value="-" onClick={({target}) => numberClick(target.value)}>-</button>
-            <button className={insideNumbers} value="1" onClick={({target}) => numberClick(target.value)}>1</button>
-            <button className={insideNumbers} value="2" onClick={({target}) => numberClick(target.value)}>2</button>
-            <button className={insideNumbers} value="3" onClick={({target}) => numberClick(target.value)}>3</button>
-            <button className={outsideButtons} value="+" onClick={({target}) => numberClick(target.value)}>+</button>
-            <button className="bg-gray-500 rounded-3xl text-4xl text-center p-3 col-span-2" value="0" onClick={({target}) => numberClick(target.value)}>0</button>
-            <button className={insideNumbers} value="." onClick={({target}) => numberClick(target.value)}>.</button>
+            <button className={outsideButtons} value="/" onClick={({target} : {target: any}) => numberClick(target.value)}>/</button>
+            <button className={insideNumbers} value="7" onClick={({target} : {target: any}) => numberClick(target.value)}>7</button>
+            <button className={insideNumbers} value="8" onClick={({target} : {target: any}) => numberClick(target.value)}>8</button>
+            <button className={insideNumbers} value="9" onClick={({target} : {target: any} ) => numberClick(target.value)}>9</button>
+            <button className={outsideButtons} value="*" onClick={({target} : {target: any} ) => numberClick(target.value)}>*</button>
+            <button className={insideNumbers} value="4" onClick={({target} : {target: any} ) => numberClick(target.value)}>4</button>
+            <button className={insideNumbers} value="5" onClick={({target} : {target: any} ) => numberClick(target.value)}>5</button>
+            <button className={insideNumbers} value="6" onClick={({target}: {target: any} ) => numberClick(target.value)}>6</button>
+            <button className={outsideButtons} value="-" onClick={({target} : {target: any}) => numberClick(target.value)}>-</button>
+            <button className={insideNumbers} value="1" onClick={({target} : {target: any}) => numberClick(target.value)}>1</button>
+            <button className={insideNumbers} value="2" onClick={({target} : {target: any}) => numberClick(target.value)}>2</button>
+            <button className={insideNumbers} value="3" onClick={({target} : {target: any} ) => numberClick(target.value)}>3</button>
+            <button className={outsideButtons} value="+" onClick={({target} : {target: any}) => numberClick(target.value)}>+</button>
+            <button className="bg-gray-500 rounded-3xl text-4xl text-center p-3 col-span-2" value="0" onClick={({target} : {target: any}) => numberClick(target.value)}>0</button>
+            <button className={insideNumbers} value="." onClick={({target} : {target: any} ) => numberClick(target.value)}>.</button>
             <button className={outsideButtons} onClick={() => submit()}>=</button>
           </div>
         </div>
