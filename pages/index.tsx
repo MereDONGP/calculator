@@ -18,6 +18,7 @@ export default function Home() {
   const[signInputs, setSignInputs] = useState("")
   const [resetting, setRest] = useState(false)
   const [dotChecked, setChecked] = useState(false)
+  const [currentInput, setCurrentInput] = useState([])
 
   const getOperation = (num1: number, assignment: string, num2:number) => {
     if(assignment === "+"){
@@ -40,7 +41,7 @@ export default function Home() {
         setShow(number)
       }
         setShow(number)
-        setNumberInputs(numberInputs.concat(Number(number)))
+        setCurrentInput(currentInput.concat(Number(number)))
     }
     else if(Number(number) || number === "."){
       if(resetting){
@@ -54,44 +55,53 @@ export default function Home() {
           }
         }else{
           setShow(number)
-          setNumberInputs(numberInputs.concat(Number(number)))
+          setCurrentInput(currentInput.concat(Number(number)))
           setRest(false)
         }
       }else{
-        setShow(show + number)
-        setNumberInputs(numberInputs.concat(Number(number)))
+        setShow(show + number) 
+        setCurrentInput(currentInput.concat(show + number))
+        console.log(currentInput)
       }
     }
-    else if(number === "+" || number === "-" || number === "*" || number === "/"){
+    else if(number === "+" || number === "-" || number === "*" || number === "/" || number === "="){
+      if(number === "="){
+        let finalTotal = getOperation(Number(numberInputs[0]), numberInputs[1], Number(numberInputs[2]))
+        console.log(numberInputs)
+        console.log(`here is the current input with the second number ${numberInputs[2]}`)
+        console.log(`here is the current input ${currentInput[currentInput.length - 1]}`)
+        numberInputs.push(Number(currentInput))
+    
+        if(numberInputs.length === 3){
+          finalTotal = getOperation(Number(numberInputs[0]), numberInputs[1], Number(numberInputs[2]))
+        }else{
+          for(let i = 4; i < numberInputs.length; i  = i + 2){
+            console.log(`here is the first final total ${finalTotal}`)
+            finalTotal = getOperation(finalTotal, numberInputs[i -1], Number(numberInputs[i]))
+            console.log(`here is the negative one${numberInputs[i -1]}`)
+            console.log(`here is the positive nput${numberInputs[i]}`)
+            console.log(`here is the second final total${finalTotal}`)
+          }
+        }
+        setShow(finalTotal)
+      }
+      numberInputs.push(Number(currentInput[currentInput.length - 1]))
+      setCurrentInput([])
       setNumberInputs(numberInputs.concat(number))
       setRest(true)
-      console.log("fired")
     }
   }
-
   // get the first 2 numbers and then check the first sign in the array
   // do the appropriate operation after checking what is the operation
   //1 + 2 + 3 
   //1 + 2 + 3 + 4
-  const submit = ()  => {
-    let finalTotal = getOperation(numberInputs[0], numberInputs[1], numberInputs[2])
-
-    if(numberInputs.length === 3){
-      setShow(finalTotal)
-    }else{
-      for(let i = 4; i < numberInputs.length; i  = i + 2){
-        finalTotal = getOperation(finalTotal, numberInputs[i -1], numberInputs[i])
-        console.log(finalTotal)
-      }
-    }
-    setShow(finalTotal)
-  }
 
   const clearButton = () => {
     setShow("0")
     setNumberInputs([])
     setSignInputs("")
     setChecked(false)
+    setCurrentInput([])
   }
 
 /*   useEffect(() => {
@@ -123,7 +133,7 @@ export default function Home() {
             <button className={outsideButtons} value="+" onClick={({target} : {target: any}) => numberClick(target.value)}>+</button>
             <button className="bg-gray-500 rounded-3xl text-4xl text-center p-3 col-span-2" value="0" onClick={({target} : {target: any}) => numberClick(target.value)}>0</button>
             <button className={insideNumbers} value="." onClick={({target} : {target: any} ) => numberClick(target.value)}>.</button>
-            <button className={outsideButtons} onClick={() => submit()}>=</button>
+            <button className={outsideButtons} value="=" onClick={({target} : {target: any}) => numberClick(target.value)}>=</button>
           </div>
         </div>
       </div>
