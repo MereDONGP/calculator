@@ -67,20 +67,16 @@ export default function Home() {
     else if(number === "+" || number === "-" || number === "*" || number === "/" || number === "="){
       if(number === "="){
         let finalTotal = getOperation(Number(numberInputs[0]), numberInputs[1], Number(numberInputs[2]))
-        console.log(numberInputs)
-        console.log(`here is the current input with the second number ${numberInputs[2]}`)
-        console.log(`here is the current input ${currentInput[currentInput.length - 1]}`)
-        numberInputs.push(Number(currentInput))
+        console.log(`here we are for the final total ${finalTotal}`)
+        numberInputs.push(Number(currentInput[currentInput.length - 1]))
+        console.log(`here is the final current input ${currentInput[currentInput.length - 1]}`)
+        console.log(`here we are in this cycle ${numberInputs}`)
     
         if(numberInputs.length === 3){
           finalTotal = getOperation(Number(numberInputs[0]), numberInputs[1], Number(numberInputs[2]))
         }else{
           for(let i = 4; i < numberInputs.length; i  = i + 2){
-            console.log(`here is the first final total ${finalTotal}`)
             finalTotal = getOperation(finalTotal, numberInputs[i -1], Number(numberInputs[i]))
-            console.log(`here is the negative one${numberInputs[i -1]}`)
-            console.log(`here is the positive nput${numberInputs[i]}`)
-            console.log(`here is the second final total${finalTotal}`)
           }
         }
         setShow(finalTotal)
