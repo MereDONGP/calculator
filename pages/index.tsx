@@ -11,6 +11,10 @@ export default function Home() {
   //if the user clicks on a number string add it to the either the number or signInput States
   //After the user clicks on the signs input should reset to start going through new numbers
 
+  //fix the dotchecked funciton
+    //meaning first odt is triggered can;t click again
+  //fix the zero function to work 
+
   const outsideButtons = "bg-amber-500 rounded-3xl text-4xl text-center p-3"
   const insideNumbers = "bg-gray-500 rounded-3xl text-4xl text-center p-3"
   const [show, setShow] = useState("0")
@@ -41,10 +45,12 @@ export default function Home() {
         setShow(number)
       }
         setShow(number)
+        console.log("we cheked the dot last")
         setCurrentInput(currentInput.concat(Number(number)))
     }
-    else if(Number(number) || number === "."){
+    else if(Number(number) || number === "." || number === "0"){
       if(resetting){
+        setChecked(false)
         if(number === "."){
           if(dotChecked){
             console.log("create error message")
@@ -58,7 +64,16 @@ export default function Home() {
           setCurrentInput(currentInput.concat(Number(number)))
           setRest(false)
         }
-      }else{
+      }
+      else if(number === "."){
+        if(dotChecked){
+          console.log("create an error message")
+          return false
+        }
+        setChecked(true)
+        setShow(show + number)
+      }
+      else{
         setShow(show + number) 
         setCurrentInput(currentInput.concat(show + number))
         console.log(currentInput)
@@ -67,10 +82,7 @@ export default function Home() {
     else if(number === "+" || number === "-" || number === "*" || number === "/" || number === "="){
       if(number === "="){
         let finalTotal = getOperation(Number(numberInputs[0]), numberInputs[1], Number(numberInputs[2]))
-        console.log(`here we are for the final total ${finalTotal}`)
         numberInputs.push(Number(currentInput[currentInput.length - 1]))
-        console.log(`here is the final current input ${currentInput[currentInput.length - 1]}`)
-        console.log(`here we are in this cycle ${numberInputs}`)
     
         if(numberInputs.length === 3){
           finalTotal = getOperation(Number(numberInputs[0]), numberInputs[1], Number(numberInputs[2]))
@@ -98,6 +110,7 @@ export default function Home() {
     setSignInputs("")
     setChecked(false)
     setCurrentInput([])
+    setRest(false)
   }
 
 /*   useEffect(() => {
