@@ -3,17 +3,6 @@ import React, { useState}from 'react'
 //refractor ideas create a component for the buttons numebrs and signs
 
 export default function Home() {
-  //it takes 8 characters to fill the input box
-
-
-  //when a div is clicked add a number to the string when the user clicks a button
-  //afer user clicks a button add it to the inputs as a new entry in to the array NOTE array will contain strings
-  //if the user clicks on a number string add it to the either the number or signInput States
-  //After the user clicks on the signs input should reset to start going through new numbers
-
-  //fix the dotchecked funciton
-    //meaning first odt is triggered can;t click again
-  //fix the zero function to work 
 
   const outsideButtons = "bg-amber-500 rounded-3xl text-4xl text-center p-3"
   const insideNumbers = "bg-gray-500 rounded-3xl text-4xl text-center p-3"
@@ -43,21 +32,25 @@ export default function Home() {
     if(show === "0" && number !== "."){
       if(resetting){
         setShow(number)
+        setRest(false)
       }
         setShow(number)
-        console.log("we cheked the dot last")
         setCurrentInput(currentInput.concat(Number(number)))
     }
     else if(Number(number) || number === "." || number === "0"){
       if(resetting){
         setChecked(false)
+        console.log(dotChecked)
         if(number === "."){
-          if(dotChecked){
-            console.log("create error message")
-          }else{
+          if(currentInput.length === 0){
+            console.log("we would work")
+            setChecked(false)
+            setShow("0"+ number)
             setChecked(true)
-            setShow("0")
-            setShow(show + number)
+            setRest(false)
+          }
+          else if(dotChecked){
+            console.log("create error message we are here for now")
           }
         }else{
           setShow(number)
@@ -97,6 +90,7 @@ export default function Home() {
       setCurrentInput([])
       setNumberInputs(numberInputs.concat(number))
       setRest(true)
+      
     }
   }
   // get the first 2 numbers and then check the first sign in the array
