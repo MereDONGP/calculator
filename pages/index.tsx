@@ -1,6 +1,7 @@
 import React, { useState}from 'react'
 
 //refractor ideas create a component for the buttons numebrs and signs
+//figure out how to do the order of operations
 
 export default function Home() {
 
@@ -23,8 +24,8 @@ export default function Home() {
     else if(assignment === "*"){
       return num1 * num2
     }
-    else if(assignment === "-"){
-      return num1 - num2
+    else if(assignment === "/"){
+      return num1 / num2
     }
   }
 
@@ -76,12 +77,30 @@ export default function Home() {
       if(number === "="){
         let finalTotal = getOperation(Number(numberInputs[0]), numberInputs[1], Number(numberInputs[2]))
         numberInputs.push(Number(currentInput[currentInput.length - 1]))
-    
+        
         if(numberInputs.length === 3){
           finalTotal = getOperation(Number(numberInputs[0]), numberInputs[1], Number(numberInputs[2]))
         }else{
           for(let i = 4; i < numberInputs.length; i  = i + 2){
             finalTotal = getOperation(finalTotal, numberInputs[i -1], Number(numberInputs[i]))
+          }
+        }
+
+        //search the array to find either a * or /
+        //if there is a a * or / found
+        // take the option before and the option after and do the operation
+        //replace the total amount that was gotten with the number that is to the left of the operation
+        //after getting the total amount, remove the operation  and the number on the right
+        //after iterations is done repeat the interations to see if there is anymore
+        //if there is no more complete the rest of the operations
+        let copy = [...numberInputs]
+        for(let i = 1; i <= copy.length; i = i + 2){
+          if(copy[i] === "*" || copy[i] === "/"){
+            copy[i - 1] = getOperation(copy[i - 1], copy[i], copy[i+1])
+            console.log(numberInputs)
+            copy.splice(i, 2)
+            console.log(copy)
+            i = i - 2 
           }
         }
         setShow(finalTotal)
@@ -93,10 +112,6 @@ export default function Home() {
       
     }
   }
-  // get the first 2 numbers and then check the first sign in the array
-  // do the appropriate operation after checking what is the operation
-  //1 + 2 + 3 
-  //1 + 2 + 3 + 4
 
   const clearButton = () => {
     setShow("0")
