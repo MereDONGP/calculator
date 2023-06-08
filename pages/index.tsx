@@ -14,7 +14,7 @@ export default function Home() {
   const [dotChecked, setChecked] = useState(false)
   const [currentInput, setCurrentInput] = useState([])
 
-  const getOperation = (num1: number, assignment: string, num2:number) => {
+  const getOperation = (num1: number, assignment: string, num2:number) : Number => {
     if(assignment === "+"){
       return num1 + num2 
     }
@@ -27,6 +27,7 @@ export default function Home() {
     else if(assignment === "/"){
       return num1 / num2
     }
+    return 0
   }
 
   const numberClick = (number: string) => {
@@ -75,35 +76,36 @@ export default function Home() {
     }
     else if(number === "+" || number === "-" || number === "*" || number === "/" || number === "="){
       if(number === "="){
-        let finalTotal = getOperation(Number(numberInputs[0]), numberInputs[1], Number(numberInputs[2]))
         numberInputs.push(Number(currentInput[currentInput.length - 1]))
         
         if(numberInputs.length === 3){
-          finalTotal = getOperation(Number(numberInputs[0]), numberInputs[1], Number(numberInputs[2]))
+          setShow(getOperation(Number(numberInputs[0]), numberInputs[1], Number(numberInputs[2])))
+          console.log("now we are here right now")
         }else{
-          for(let i = 4; i < numberInputs.length; i  = i + 2){
-            finalTotal = getOperation(finalTotal, numberInputs[i -1], Number(numberInputs[i]))
+          for(let i = 1; i <= numberInputs.length; i = i + 2){
+            if(numberInputs[i] === "*" || number[i] === "/"){
+              numberInputs[i - 1] = getOperation(numberInputs[i - 1], numberInputs[i], numberInputs[i+1])
+              console.log(numberInputs)
+              numberInputs.splice(i, 2)
+              console.log(numberInputs)
+              i = i - 2 
+            }
           }
-        }
-
-        //search the array to find either a * or /
-        //if there is a a * or / found
-        // take the option before and the option after and do the operation
-        //replace the total amount that was gotten with the number that is to the left of the operation
-        //after getting the total amount, remove the operation  and the number on the right
-        //after iterations is done repeat the interations to see if there is anymore
-        //if there is no more complete the rest of the operations
-        let copy = [...numberInputs]
-        for(let i = 1; i <= copy.length; i = i + 2){
-          if(copy[i] === "*" || copy[i] === "/"){
-            copy[i - 1] = getOperation(copy[i - 1], copy[i], copy[i+1])
-            console.log(numberInputs)
-            copy.splice(i, 2)
-            console.log(copy)
-            i = i - 2 
+          let finalTotal = getOperation(Number(numberInputs[0]), numberInputs[1], Number(numberInputs[2]))
+          if(numberInputs.length === 1){
+            console.log(`there is only one input ${numberInputs}`)
+            console.log(` Here is the number that you are looking for${numberInputs[0]}`)
+            finalTotal = numberInputs[0]
+            setShow(numberInputs[0])
           }
+          for(let i = 3; i < numberInputs.length; i  = i + 2){
+            console.log("here we are right now")
+            console.log(finalTotal)
+            finalTotal = getOperation(finalTotal, numberInputs[i], Number(numberInputs[i + 1]))
+            console.log(`${Number(numberInputs[i-1])}, ${numberInputs[i]}, ${Number(numberInputs[i+1])}`)
+          }
+          setShow(finalTotal)
         }
-        setShow(finalTotal)
       }
       numberInputs.push(Number(currentInput[currentInput.length - 1]))
       setCurrentInput([])
